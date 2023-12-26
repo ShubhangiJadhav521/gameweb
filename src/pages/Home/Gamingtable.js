@@ -11,7 +11,9 @@ function Gamingtable() {
     axios.get('https://game-app-2k9q.onrender.com/api/games')
       .then((res) => {
         console.log(res.data);
-        setgameData(res.data.slice().sort((a, b) => a.displayOrder - b.displayOrder || []) || []); // Ensure data is an array
+        let GameSortdata= res.data.slice().sort((a, b) => a.displayOrder - b.displayOrder || []) || []
+        // .slice().sort((a, b) =>  b.rating - a.rating)|| []
+        setgameData(GameSortdata) ; 
       })
       .catch((err) => console.log(err));
   }
@@ -37,11 +39,12 @@ function Gamingtable() {
            <tr key={index} className="btable-row  logo-ribbon-addded">
            <td className="td-logo">
              <div className="td-c td-logo-c ">
-               <a className="" href="https://fb.com" target="_blank" rel="noreferrer">
+               <a className="" href={item.getBonusURL} target="_blank" rel="noreferrer">
                  <div className="row-count">
                    <span>{index+1}</span>
                  </div>
-                 <div className="ribbon-1">EXCLUSIVE BONUS</div>
+                 {item.ribbontext?<div className="ribbon-1">{item.ribbontext}</div>:''}
+                 
                  <img src={item.logoURL} alt="D11 logo"
                    className="brand-logo" />
                </a>
@@ -101,7 +104,7 @@ function Gamingtable() {
                  <i className="fas fa-star"></i>
                  <i className="fas fa-star-half-alt"></i>
                </div>
-               <div className="rated"> Votes (13,251) </div>
+               <div className="rated"> Votes ({item.votes}) </div>
              </div>
            </td>
           
@@ -113,7 +116,7 @@ function Gamingtable() {
                </div>
                <div style={{ marginTop: "10px" }}>
                  <a className="visit-text " href={item.visitURL} target="_blank" rel="noreferrer">
-                   Visit Dream11 </a>
+                   Visit&nbsp;{item.gamename}</a>
                </div>
 
 

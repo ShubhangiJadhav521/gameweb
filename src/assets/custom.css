@@ -927,8 +927,10 @@ body {
     background-size: cover;
     background-attachment: fixed;
     position: relative;
-    background-color: #291c41;
+    
+   
   }
+
   body:after {
     content: "";
     height: 100vh;

@@ -11,48 +11,11 @@ import '../../assets/custom.css'
 import '../../assets/custom-2.css'
 import '../../assets/queries.css'
 import '../../assets/new.css'
+
 function Home() {
+
     return (
-        // <div className='container'>
-        //     <div className='head_section'>
-        //         <div className='inner_section'>
 
-        //             <h1 className='main_heading'>BEST INDIAN ONLINE GAMING OFFERS
-        //                 FOR 2023</h1>
-        //             <div className='para-text'>
-        //                 <p>
-        //                     Looking for the best online Gaming in India? We’ve got you covered. Our team of experts spend hours testing and reviewing every site out there, saving you the hard work. We are constantly updating our database so you have access to accurate information about the best new Gaming sites around!
-        //                 </p>
-        //             </div>
-        //         </div>
-        //         <div className='section_table'>
-        //         <div className='top_desktop'>
-        //             <div className='icon_stripc'>
-        //                 <div className='icon_strip'>
-        //                     <div className='icon'>
-        //                         <img src={Inflag} />
-        //                         INDIA ACCEPTED
-        //                     </div>
-        //                     <div className='icon'>
-        //                         <img src={Payout} />
-        //                         INDIA ACCEPTED
-        //                     </div>
-        //                     <div className='icon'>
-        //                         <img src={Review} />
-        //                         INDIA ACCEPTED
-        //                     </div>
-
-        //                 </div>
-        //             </div>
-
-        //         </div>
-        //         <Gamingtable/>
-
-        //     </div>
-        //     </div>
-
-
-        // </div>
         <div id="page" className="site">
 
             <div id="content" className="site-content">
@@ -104,6 +67,7 @@ function Home() {
                                     </div>
                                 </div>
                             </div>
+
                             <div className="section section--btable">
                                 <div className="top-desktop" style={{ display: 'flex', justifyContent: 'center' }}>
                                     <div className="tc-table" />
@@ -128,7 +92,9 @@ function Home() {
                                         </div>
                                     </div>
                                 </div>
+
                                 <Gamingtable />
+
                             </div>
                         </div>
                     </div>

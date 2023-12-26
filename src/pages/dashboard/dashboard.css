@@ -1,0 +1,33 @@
+input{
+    padding: 10px;
+}
+
+/* styles.css */
+
+.tableContainer {
+    /* Add styles for TableContainer if needed */
+  }
+  
+  .customTable {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  
+  .customTable th,
+  .customTable td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+  }
+  
+  .customTable tbody tr:nth-of-type(odd) {
+    background-color: #f2f2f2;
+  }
+  .header{
+    width: 80%;
+    text-align: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    place-content: center;
+    margin-left: 80px;
+  }

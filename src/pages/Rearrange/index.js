@@ -2,7 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import { Grid, Typography } from '@mui/material';
 
-import {useNavigate} from "react-router-dom"
+import {useNavigate} from "react-router-dom";
+import "../dashboard/dashboard.css";
 
 
 function ListSort() {
@@ -67,7 +68,10 @@ function ListSort() {
     axios.get('https://game-app-2k9q.onrender.com/api/games')
       .then((res) => {
         console.log(res.data);
-        setGameData(res.data.slice().sort((a, b) => a.displayOrder - b.displayOrder || [])); // Ensure data is an array
+        let GameSortdata= res.data.slice().sort((a, b) => a.displayOrder - b.displayOrder || []) || []
+        // .slice().sort((a, b) =>  b.rating - a.rating)|| []
+        setGameData(GameSortdata) ; 
+        
       })
       .catch((err) => console.log(err));
   }
@@ -81,61 +85,68 @@ function ListSort() {
 
   return (
     <div className="app">
-      {/* <h2>Game List</h2> */}
-      <Grid container spacing={2} sx={{ marginRight: '10px',alignItems:'center',display:'flex', }}>
-        <Grid item xs={12} sx={{ color: 'black', textAlign: 'center' , justifyContent:'center' }}  >
-          <Grid container sx={{marginLeft:'25px'}} >
+    <div className="header">
+      <Grid container spacing={2} > 
+        <Grid item xs={12} sx={{ color: 'black', textAlign: 'center' }}  >
+          <Grid container>
             <Grid item xs={1}></Grid>
             <Grid item xs={3} >
-              <Typography  >Gaming APP</Typography>
+              <Typography>Gaming APP</Typography>
             </Grid>
             <Grid item xs={4} >
-              <Typography >BONUS</Typography>
+              <Typography>BONUS</Typography>
             </Grid>
-
+            <Grid item xs={4} >
+              <Typography >RATING</Typography>
+            </Grid>
           </Grid>
         </Grid>
       </Grid>
-
-      <div className="list-sort" style={{alignItems:'center',display:'flex', flexDirection:'column'}}>
-        {gameData.map((item, index) => (
-          <div
-            key={index}
-            className="list-item"
-            draggable="true"
-            onDragStart={() => handleDragStart(index)} // Call handleDragStart with the current index
-            onDragEnter={() => handleDragEnter(index)}
-            onDragEnd={handleDragEnd}
-            onDragOver={(e) => e.preventDefault()}
-            style={{
-              margin: '8px 0',
-              border: '1px solid #ccc',
-              borderRadius: '4px',
-              background: 'white',
-              padding: '10px',
-              alignItems: 'center',
-              display: 'flex',
-              placeContent: 'center',
-              justifyContent:'center',
-              width: '80%'
-            }}
-          >
-            <Grid container item xs={12} sx={{ alignItems: 'center',textAlign:'center' }} >
-              <Grid item xs={12} sm={1} sx={{fontWeight:'900'}}>{index + 1}</Grid>
-              <Grid item xs={12} sm={3}>
-                <img src={item.logoURL} alt="game" height={'100px'} width={'100px'} />
-              </Grid>
-              <Grid item xs={12} sm={4} sx={{ marginLeft: '30px', }}>
-                <h3>{item.offers}</h3>
-                <p>{item.text2}</p>
-              </Grid>
-
-            </Grid>
-          </div>
-        ))}
-      </div>
-
     </div>
+  
+    <div className="list-sort" style={{ alignItems: 'center', display: 'flex', flexDirection: 'column' }}>
+      {gameData.map((item, index) => (
+        <div
+          key={index}
+          className="list-item"
+          draggable="true"
+          onDragStart={() => handleDragStart(index)}
+          onDragEnter={() => handleDragEnter(index)}
+          onDragEnd={handleDragEnd}
+          onDragOver={(e) => e.preventDefault()}
+          style={{
+            margin: '8px 0',
+            border: '1px solid #ccc',
+            borderRadius: '4px',
+            background: 'white',
+            padding: '10px',
+            alignItems: 'center',
+            display: 'flex',
+            placeContent: 'center',
+            justifyContent: 'center',
+            width: '80%'
+          }}
+        >
+          <Grid container item xs={12} sx={{ alignItems: 'center', textAlign: 'center' }} >
+            <Grid item xs={12} sm={1} sx={{ fontWeight: '900' }}>{index + 1}</Grid>
+            <Grid item xs={12} sm={3}>
+              <a href={item.getBonusURL} target="_blank" rel="noreferrer">
+                <img src={item.logoURL} alt="game" height={'50px'} width={'100px'} />
+              </a>
+            </Grid>
+            <Grid item xs={12} sm={4} >
+              <Typography variant='h5' >{item.offers}</Typography>
+              <Typography variant='body2'>{item.text2}</Typography>
+            </Grid>
+            <Grid item xs={12} sm={4} >
+              <Typography variant='h5' >{item.rating}</Typography>
+            </Grid>
+          </Grid>
+        </div>
+      ))}
+    </div>
+  </div>
+  
   );
 }
 
