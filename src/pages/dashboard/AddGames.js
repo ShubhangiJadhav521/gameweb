@@ -14,7 +14,8 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutlineOutlined';
 // import Editform from "../Rearrange/Editform";
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import './dashboard.css';
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 
 
@@ -46,8 +47,12 @@ function Gameadd() {
   const handleSubmit = async () => {
     console.log("formData", formData)
     try {
-      const response = await axios.post('https://game-app-2k9q.onrender.com/api/games', formData);
+      const response = await axios.post('https://game-app-back.onrender.com/api/games', formData);
       console.log('Game created:', response.data);
+      toast.success('Add Game Successful', {
+        autoClose: 2000, 
+        position: 'bottom-left', 
+      });
       getGamedata()
     } catch (error) {
       console.error('Error creating game:', error);
@@ -64,24 +69,31 @@ function Gameadd() {
       gamename:''
     });
   };
+  // Delete API
   const handleDelete = (row) => {
     console.log(row)
-    axios.delete(`https://game-app-2k9q.onrender.com/api/games/${row._id}`)
+    axios.delete(`https://game-app-back.onrender.com/api/games/${row._id}`)
       .then((response) => {
         console.log(' Delete successful:', response);
+        toast.error('Delete Successful', {
+          autoClose: 2000, 
+          position: 'bottom-left', 
+        });
         getGamedata()
       })
       .catch((error) => {
         console.error('Error updating data:', error);
       });
   }
+  // Get games
   const getGamedata = () => {
-    axios.get('https://game-app-2k9q.onrender.com/api/games')
+    axios.get('https://game-app-back.onrender.com/api/games')
       .then((res) => {
         console.log(res.data);
         let GameSortdata= res.data.slice().sort((a, b) => a.displayOrder - b.displayOrder || []) || []
         // .slice().sort((a, b) =>  b.rating - a.rating)|| []
         setgameData(GameSortdata) ; 
+
       })
       .catch((err) => console.log(err));
   }
@@ -98,29 +110,42 @@ function Gameadd() {
     setEditMode(true);
     setEditedRow({ ...row }); // Create a copy of the row to edit
   };
-
+// Update
   const handleSave = () => {
     // Find the index of the edited row in gameData
-    const index = gameData.findIndex((row) => row.gameId === editedRow.gameId);
+    const index = gameData.findIndex((row) => row._id === editedRow._id);
     if (index !== -1) {
+      const isDataChanged = Object.keys(editedRow).some(
+        (key) => editedRow[key] !== gameData[index][key]
+      );
       // Update the specific row in gameData with the editedRow data
-      const updatedGameData = [...gameData];
-      updatedGameData[index] = editedRow;
-      setgameData(updatedGameData);
-      console.log("upadate", editedRow)
-      axios.put(`https://game-app-2k9q.onrender.com/api/games/${editedRow._id}`, editedRow)
-        .then((response) => {
-          console.log('Update successful:', response);
-          props.getGamedata();
-          props.handleClose(); 
-        })
-        .catch((error) => {
-          console.error('Error updating data:', error);
-        });
-    }
-    setEditMode(false);
-    setEditedRow(null);
-  };
+      if (isDataChanged) {
+        const updatedGameData = [...gameData];
+        updatedGameData[index] = editedRow;
+        setgameData(updatedGameData);
+  
+        axios.put(`https://game-app-back.onrender.com/api/games/${editedRow._id}`, editedRow)
+          .then((response) => {
+            console.log('Update successful:', response);
+            toast.success('Update Game Successful', {
+              autoClose: 2000,
+              position: 'bottom-left',
+            });
+            // props.getGamedata(); // Consider using getGamedata instead of props.getGamedata
+            getGamedata(); // Update the data after saving
+          })
+          .catch((error) => {
+            console.error('Error updating data:', error);
+          });
+      } else {
+        setEditMode(false); // No changes made, exit handleSave function
+        
+      }
+   
+     
+      setEditedRow(null);
+  }
+};
 
   return (
     <div>
@@ -250,9 +275,9 @@ function Gameadd() {
           </TableHead>
         <TableBody>
           {gameData && gameData.map((row) => (
-            <TableRow key={row.gameId}>
+            <TableRow key={row._id}>
               <TableCell component="th" scope="row">
-              {editMode && editedRow?.gameId === row.gameId ? (<div>
+              {editMode && editedRow?._id === row._id ? (<div>
                     <TextField
                       type="text"
                       value={editedRow.logoURL}
@@ -266,7 +291,7 @@ function Gameadd() {
                 
               </TableCell>
               <TableCell align="left">
-                {editMode && editedRow?.gameId === row.gameId ? (
+                {editMode && editedRow?._id === row._id ? (
                   <div>
                     <TextField
                       type="text"
@@ -291,7 +316,7 @@ function Gameadd() {
                 )}
               </TableCell>
               <TableCell align="left">
-                {editMode && editedRow?.gameId === row.gameId ? (
+                {editMode && editedRow?._id === row._id ? (
                   <div>
                     <TextField
                       type="text"
@@ -308,7 +333,7 @@ function Gameadd() {
                 )}
               </TableCell>
               <TableCell align='left'>  
-              {editMode && editedRow?.gameId === row.gameId ? (
+              {editMode && editedRow?._id === row._id ? (
                   <div>
                     <TextField
                       type="text"
@@ -323,7 +348,7 @@ function Gameadd() {
                   </div>
                 )}</TableCell>
               <TableCell align='left'>
-              {editMode && editedRow?.gameId === row.gameId ? (
+              {editMode && editedRow?._id === row._id ? (
                   <div>
                     <TextField
                       type="text"
@@ -339,7 +364,7 @@ function Gameadd() {
                 )}
                 </TableCell> 
               <TableCell align="left">
-                {editMode && editedRow?.gameId === row.gameId ? (
+                {editMode && editedRow?._id === row._id ? (
                   <div>
                     <TextField
                       type="text"
@@ -359,12 +384,12 @@ function Gameadd() {
                 ) : (
                   <div>
                     <Typography ><a href={row.getBonusURL}>Get Bonus</a></Typography>
-                    <Typography > <a href={row.visitURL}> Visite&nbsp;{row.gamename}</a></Typography>
+                    <Typography > <a href={row.visitURL}> Visit&nbsp;{row.gamename}</a></Typography>
                   </div>
                 )}
               </TableCell>
               <TableCell>
-                {editMode && editedRow?.gameId === row.gameId ? (
+                {editMode && editedRow?._id === row._id ? (
                   <IconButton onClick={handleSave}>
                     <SaveOutlinedIcon style={{color:'green', fontSize:'25px'}}/>
                   </IconButton>
@@ -380,6 +405,7 @@ function Gameadd() {
           ))}
         </TableBody>
       </Table>
+      <ToastContainer/>
     </TableContainer>
     </div>
 

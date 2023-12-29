@@ -49,7 +49,7 @@ function ListSort() {
       //   return rest;
       // });
 
-      axios.put('https://game-app-2k9q.onrender.com/api/games/reorder', { updatedGameData: reorderedData })
+      axios.put('https://game-app-back.onrender.com/api/games/reorder', { updatedGameData: reorderedData })
         .then((res) => {
           console.log('Reordering successful:', res.data);
           Getgame();
@@ -65,7 +65,7 @@ function ListSort() {
 
 
   const Getgame = () => {
-    axios.get('https://game-app-2k9q.onrender.com/api/games')
+    axios.get('https://game-app-back.onrender.com/api/games')
       .then((res) => {
         console.log(res.data);
         let GameSortdata= res.data.slice().sort((a, b) => a.displayOrder - b.displayOrder || []) || []

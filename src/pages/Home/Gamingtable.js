@@ -8,7 +8,7 @@ import axios from "axios";
 function Gamingtable() {
  const [gameData, setgameData] = useState()
   const getGamedata = () => {
-    axios.get('https://game-app-2k9q.onrender.com/api/games')
+    axios.get('https://game-app-back.onrender.com/api/games')
       .then((res) => {
         console.log(res.data);
         let GameSortdata= res.data.slice().sort((a, b) => a.displayOrder - b.displayOrder || []) || []

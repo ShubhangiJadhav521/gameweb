@@ -3,6 +3,8 @@ import { Container, TextField, Button, Box, Typography, Paper } from '@mui/mater
 import { styled } from '@mui/system';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginContainer = styled(Container)({
   display: 'flex',
@@ -31,17 +33,28 @@ const LoginForm = () => {
     e.preventDefault();
     console.log("credentials", credentials)
     try {
-      const response = await axios.post('https://game-app-2k9q.onrender.com/auth/login', credentials);
+      const response = await axios.post('https://game-app-back.onrender.com/auth/login', credentials);
       const { token, status } = response.data;
 
       if (status == 'Success') {
         localStorage.setItem('adminToken', token);
-        window.alert("Login Successfully")
-        navigate('/mainlayout/dashboard')
+        toast.success('Login Successful', {
+          autoClose: 2000, 
+          position: 'bottom-right', 
+        });
+        setTimeout(() => {
+          navigate('/mainlayout/dashboard')
+        }, 2000);
+        
+      }else{
+        toast.error('Invalid Credentials', {
+          autoClose: 2000, 
+          position: 'top-right', 
+        });
       }
 
     } catch (error) {
-      window.alert("Invalid Credentials")
+    
       console.error('Login error:', error);
     }
     setCredentials({
@@ -87,7 +100,9 @@ const LoginForm = () => {
           </form>
         </Box>
       </Paper>
+      <ToastContainer/>
     </LoginContainer>
+   
   );
 };
 
