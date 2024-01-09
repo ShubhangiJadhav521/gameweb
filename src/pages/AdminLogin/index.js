@@ -31,7 +31,7 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
 
     e.preventDefault();
-    console.log("credentials", credentials)
+   
     try {
       const response = await axios.post('https://game-app-back.onrender.com/auth/login', credentials);
       const { token, status } = response.data;
